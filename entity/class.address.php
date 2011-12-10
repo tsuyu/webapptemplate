@@ -5,14 +5,14 @@
  * and open the template in the editor.
  */
 
-class Address{
-    
+class Address {
+
     private $uid;
     private $address1;
     private $address2;
     private $address3;
     private $username;
-    
+
     public function getUid() {
         return $this->uid;
     }
@@ -21,7 +21,7 @@ class Address{
         $this->uid = $uid;
     }
 
-        public function getAddress1() {
+    public function getAddress1() {
         return $this->address1;
     }
 
@@ -53,6 +53,6 @@ class Address{
         $this->username = $username;
     }
 
-
 }
+
 ?>

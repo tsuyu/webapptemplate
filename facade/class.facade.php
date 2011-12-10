@@ -1,8 +1,9 @@
 <?php
 
-include '../entity/class.address.php';
-include '../entity/class.user.php';
-include '../api/class.userapi.php';
+include_once '../entity/class.address.php';
+include_once '../entity/class.user.php';
+include_once '../api/class.userapi.php';
+
 /**
  * Enter description here ...
  * @author tsuyu
@@ -13,6 +14,7 @@ class Facade {
     private $user;
     private $address;
     private $userapi;
+    private $util;
 
     public function __construct($class) {
         foreach ($class as $key => $value) {
@@ -29,10 +31,14 @@ class Facade {
         return $this->address;
     }
     
-    public function saveUser($user){
+    public function utilInstance() {
+        return $this->util;
+    }
+
+    public function saveUser($user) {
         $this->userapi->saveUser($user);
     }
-    
+
     public function __destruct() {
         unset($this->user);
         unset($this->address);

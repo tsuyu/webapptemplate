@@ -1,6 +1,6 @@
 <?php
 
-include 'facade/class.facade.php';
+include '../facade/class.facade.php';
 
 class Controller {
 
@@ -8,12 +8,10 @@ class Controller {
     public $com;
     public $action;
     public $message;
-    public $facade;
 
-    public function __construct($requestArray) {
+    public function __construct($request) {
         session_start();
-        $this->facade = Facade::getInstance(array('userapi' => 'UserApi', 'util' => 'Util'));
-        $this->reqArray = $requestArray;
+        $this->reqArray = $request;
         $this->message = '';
         $this->sanitize();
         $this->_init();
@@ -28,13 +26,14 @@ class Controller {
                 $this->com = $this->reqArray['com'];
                 break;
             default:
-                $this->com = 'invalid';
+                $this->com = '';
                 break;
         }
         $this->processAction();
     }
 
     private function _init() {
+
         switch ($this->com) {
             case 'user':
                 switch ($this->action) {
@@ -50,7 +49,7 @@ class Controller {
                         //print_r($user);
                         if ($user[0]->username == $_REQUEST['username'] && $user[0]->password == $_REQUEST['password']) {
                             //	if($user[0]->permission & $this->isUser){
-                            $_SESSION['userInSession'] = $user;
+                            $_SESSION['user'] = $user;
                             header("Location:index.php?com=otherpage");
                             //}
                         } else {
@@ -64,6 +63,18 @@ class Controller {
             case 'logout':
                 $this->logout();
                 break;
+
+            case '':
+                $user = new Facade(array("User", "Address", "UserApi"));
+                $user->userInstance()->setUsername("admin");
+                $user->userInstance()->setName("admin");
+                $user->userInstance()->setEmail("admin@localhost");
+                $user->userInstance()->setTelno("123456789");
+                $user->userInstance()->setPassword("123456");
+                $user->userInstance()->setIsActive(1);
+                $user->userInstance()->setPermission(4);
+                $user->addressInstance()->setAddress1("Kg. Cherating");
+                $user->saveUser($user);
         }
     }
 
@@ -114,7 +125,7 @@ LIST;
             case"user":
                 switch ($this->action) {
                     case "view":
-                        if ($_SESSION['userInSession'] || $_SESSION['userInSession'][0]->username == $_REQUEST['username']) {
+                        if ($_SESSION['user'] || $_SESSION['user'][0]->username == $_REQUEST['username']) {
                             include 'view/adduser.php';
                         }
                         break;

@@ -35,6 +35,8 @@ class UserApi extends Model {
             $this->db->commit();
             echo 'success';
         }
+        
+        $this->db->close();
     }
 
 }
