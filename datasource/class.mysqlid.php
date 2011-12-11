@@ -1,4 +1,5 @@
 <?php
+
 /*
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -16,7 +17,7 @@
  *      MA 02110-1301, USA.
  */
 
-class mysqld {
+class mysqlid {
 
     private $dbhost;
     private $dbuser;
@@ -28,25 +29,17 @@ class mysqld {
     private $result;
 
     /**
-     * Enter description here ...
-     * @var unknown_type
-     */
-    private $config;
-
-    /**
      * Is there any locked tables right now?
      * @var boolean
      */
     private $is_locked = false;
 
-    public function __construct() {
-
-        $this->config = parse_ini_file('config.ini', 1);
-        $this->dbhost = $this->config['mysql']['dbhost'];
-        $this->dbuser = $this->config['mysql']['dbuser'];
-        $this->dbpassword = $this->config['mysql']['dbpassword'];
-        $this->dbschema = $this->config['mysql']['dbschema'];
-        $this->dbprefix = $this->config['mysql']['dbprefix'];
+    public function __construct($config) {
+        $this->dbhost = $config['dbhost'];
+        $this->dbuser = $config['dbuser'];
+        $this->dbpassword = $config['dbpassword'];
+        $this->dbschema = $config['dbschema'];
+        $this->dbprefix = $config['dbprefix'];
         $this->open_connection();
     }
 
@@ -55,9 +48,8 @@ class mysqld {
      */
     private function open_connection() {
         try {
-            $this->connection = mysql_connect($this->dbhost, $this->dbuser, $this->
-                    dbpassword);
-            mysql_select_db($this->dbschema);
+            $this->connection = mysqli_connect($this->dbhost, $this->dbuser, $this->
+                    dbpassword, $this->dbschema);
         } catch (exception $e) {
             throw $e;
         }
@@ -69,7 +61,7 @@ class mysqld {
      */
     public function close() {
         try {
-            mysql_close($this->connection);
+            mysqli_close($this->connection);
         } catch (exception $e) {
             throw $e;
         }
@@ -82,7 +74,7 @@ class mysqld {
      */
     public function query($query) {
         try {
-            $this->result = mysql_query($query, $this->connection);
+            $this->result = mysqli_query($this->connection, $query);
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
@@ -98,7 +90,7 @@ class mysqld {
      * @return unknown
      */
     public function fetchArray($query) {
-        $row = mysql_fetch_assoc($query);
+        $row = mysqli_fetch_assoc($query);
         return $row;
     }
 
@@ -108,7 +100,7 @@ class mysqld {
      * @return array
      */
     function fetchObject($query) {
-        return mysql_fetch_object();
+        return mysqli_fetch_object();
     }
 
     /**
@@ -117,7 +109,7 @@ class mysqld {
      * @return unknown
      */
     public function count_rows($query) {
-        $row = mysql_num_rows($query);
+        $row = mysqli_num_rows($query);
         return $row;
     }
 
@@ -126,7 +118,7 @@ class mysqld {
      * @return unknown
      */
     public function rows_affected() {
-        $row = mysql_affected_rows($this->connection);
+        $row = mysqli_affected_rows($this->connection);
         return $row;
     }
 
@@ -135,7 +127,7 @@ class mysqld {
      * @return unknown
      */
     public function created_id() {
-        $row = mysql_insert_id($this->connection);
+        $row = mysqli_insert_id($this->connection);
         return $row;
     }
 
@@ -143,21 +135,21 @@ class mysqld {
      * Enter description here ...
      */
     public function commit_start() {
-        mysql_query("SET autocommit=0", $this->connection);
+        mysqli_autocommit($this->connection, FALSE);
     }
 
     /**
      * Enter description here ...
      */
     public function commit() {
-        mysql_query("SET autocommit=1", $this->connection);
+        mysqli_commit($this->connection);
     }
 
     /**
      * Enter description here ...
      */
     public function rollback() {
-        mysql_query("ROLLBACK", $this->connection);
+        $this->connection->rollback();
     }
 
     /**
@@ -183,7 +175,7 @@ class mysqld {
     }
 
     public function free_result() {
-        mysql_free_result($this->result);
+        mysqli_free_result($this->result);
     }
 
     /**
@@ -222,19 +214,20 @@ class mysqld {
      */
     public function string_escape($string, $full_escape=false) {
 
-        $str = $string;
+        $str = '';
 
         if ($full_escape)
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
 
-        if (function_exists('mysql_real_escape_string')) {
-            $str = mysql_real_escape_string($string);
+        if (function_exists('mysqli_real_escape_string')) {
+            $str = mysqli_real_escape_string($this->connection, $string);
         } else {
-            $str = mysql_escape_string($string);
+            $str = mysqli_escape_string($string);
         }
 
-        return $str;
+        return trim($str);
     }
-}
-?>
 
+}
+
+?>

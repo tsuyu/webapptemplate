@@ -4,40 +4,51 @@ include '../facade/class.facade.php';
 
 class Controller {
 
-    public $reqArray;
     public $com;
     public $action;
     public $message;
 
     public function __construct($request) {
         session_start();
-        $this->reqArray = $request;
+        $this->com = $request['com'];
+        $this->action = $request['action'];
         $this->message = '';
-        $this->sanitize();
         $this->_init();
     }
-
-    private function sanitize() {
-        switch ($this->reqArray['com']) {
-            case "login":
-            case "user":
-            case "otherpage":
-            case "logout":
-                $this->com = $this->reqArray['com'];
-                break;
-            default:
-                $this->com = '';
-                break;
-        }
-        $this->processAction();
-    }
-
+    
     private function _init() {
 
         switch ($this->com) {
             case 'user':
                 switch ($this->action) {
-                    case 'edit':
+                   case 'create':
+                        $user = new Facade('user:default');
+                        $user->userInstance()->setUsername("admin");
+                        $user->userInstance()->setName("admin");
+                        $user->userInstance()->setEmail("admin@localhost.com");
+                        $user->userInstance()->setTelno("123456789");
+                        $user->userInstance()->setPassword("123456");
+                        $user->userInstance()->setIsActive(1);
+                        $user->userInstance()->setPermission(4);
+                        $user->addressInstance()->setAddress1("Kg. Cherating");
+                        $user->saveUser($user);
+                        break;
+                     case 'retrieve':
+                        break;
+                     case 'update':
+                        $user = new Facade('user:default');
+                        $user->userInstance()->setName("admin");
+                        $user->userInstance()->setEmail("admin@localhost.com");
+                        $user->userInstance()->setTelno("123456789");
+                        $user->userInstance()->setPassword("123456");
+                        $user->userInstance()->setIsActive(1);
+                        $user->userInstance()->setPermission(4);
+                        $user->addressInstance()->setAddress1("Kg. Cherating");
+                        $user->updateUser($user);
+                        break;
+                     case 'delete':
+                        $user = new Facade('user:delete');
+                        //$user->deleteUser("admin");
                         break;
                 }
                 break;
@@ -63,18 +74,6 @@ class Controller {
             case 'logout':
                 $this->logout();
                 break;
-
-            case '':
-                $user = new Facade(array("User", "Address", "UserApi"));
-                $user->userInstance()->setUsername("admin");
-                $user->userInstance()->setName("admin");
-                $user->userInstance()->setEmail("admin@localhost");
-                $user->userInstance()->setTelno("123456789");
-                $user->userInstance()->setPassword("123456");
-                $user->userInstance()->setIsActive(1);
-                $user->userInstance()->setPermission(4);
-                $user->addressInstance()->setAddress1("Kg. Cherating");
-                $user->saveUser($user);
         }
     }
 
@@ -86,20 +85,8 @@ class Controller {
         exit();
     }
 
-    private function processAction() {
-        switch ($this->reqArray['action']) {
-            case "view":
-            case "edit":
-                $this->action = $this->reqArray['action'];
-                break;
-            default:
-                $this->action = 'invalid1';
-                break;
-        }
-    }
-
     public function loadMenu() {
-        if ($_SESSION['userInSession']) {
+        if ($_SESSION['user']) {
             echo<<<LIST
         <h3 class="menuheader">User Tool</h3>
 		<ul>
