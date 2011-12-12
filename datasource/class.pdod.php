@@ -17,7 +17,7 @@
  *      MA 02110-1301, USA.
  */
 
-class mysqld {
+class pdod {
 
     private $dbhost;
     private $dbuser;
@@ -48,11 +48,10 @@ class mysqld {
      */
     private function open_connection() {
         try {
-            $this->connection = mysql_connect($this->dbhost, $this->dbuser, $this->
-                    dbpassword);
-            mysql_select_db($this->dbschema);
-        } catch (exception $e) {
-            throw $e;
+            $this->connection = new PDO("mysql:host=" . $this->dbhost . ";dbname=" . $this->dbschema . "", $this->dbuser, $this->dbpassword);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            print "Error!: " . $e->getMessage() . "<br/>";
         }
     }
 
@@ -62,7 +61,7 @@ class mysqld {
      */
     public function close() {
         try {
-            mysql_close($this->connection);
+            $this->connection = NULL;
         } catch (exception $e) {
             throw $e;
         }
@@ -75,7 +74,7 @@ class mysqld {
      */
     public function query($query) {
         try {
-            $this->result = mysql_query($query, $this->connection);
+            $this->result = $this->connection->query($query);
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
@@ -91,8 +90,7 @@ class mysqld {
      * @return unknown
      */
     public function fetchArray($query) {
-        $row = mysql_fetch_assoc($query);
-        return $row;
+        
     }
 
     /**
@@ -101,7 +99,7 @@ class mysqld {
      * @return array
      */
     function fetchObject($query) {
-        return mysql_fetch_object();
+      
     }
 
     /**
@@ -110,9 +108,8 @@ class mysqld {
      * @return unknown
      */
     public function count_rows($query) {
-        $result = mysql_query($query, $this->connection);
-        $num_rows = mysql_num_rows($result);
-        return $num_rows;
+        $num_rows = $this->connection->query($query)->fetchColumn(); 
+        return count($num_rows);
     }
 
     /**
@@ -120,8 +117,7 @@ class mysqld {
      * @return unknown
      */
     public function rows_affected() {
-        $row = mysql_affected_rows($this->connection);
-        return $row;
+      
     }
 
     /**
@@ -129,29 +125,28 @@ class mysqld {
      * @return unknown
      */
     public function created_id() {
-        $row = mysql_insert_id($this->connection);
-        return $row;
+      
     }
 
     /**
      * Enter description here ...
      */
     public function commit_start() {
-        mysql_query("SET autocommit=0", $this->connection);
+        $this->connection->beginTransaction();
     }
 
     /**
      * Enter description here ...
      */
     public function commit() {
-        mysql_query("SET autocommit=1", $this->connection);
+        $this->connection->commit();
     }
 
     /**
      * Enter description here ...
      */
     public function rollback() {
-        mysql_query("ROLLBACK", $this->connection);
+        $this->connection->rollBack();
     }
 
     /**
@@ -160,12 +155,7 @@ class mysqld {
      * @return Ambigous <multitype:, unknown>
      */
     public function arrayData($query) {
-        $data = array();
-        $this->result = $this->query($query);
-        while ($row = $this->fetchArray($this->result)) {
-            $data[] = $row;
-        }
-        return $data;
+       
     }
 
     /**
@@ -177,7 +167,7 @@ class mysqld {
     }
 
     public function free_result() {
-        mysql_free_result($this->result);
+       
     }
 
     /**
@@ -185,16 +175,7 @@ class mysqld {
      * @param unknown_type $tables
      */
     public function lock_tables($tables) {
-        if (is_array($tables) && count($tables) > 0) {
-            $mysql = '';
-
-            foreach ($tables as $name => $type) {
-                $mysql.=(!empty($mysql) ? ', ' : '') . '' . $name . ' ' . $type . '';
-            }
-
-            $this->rq('LOCK TABLES ' . $mysql . '');
-            $this->is_locked = true;
-        }
+        
     }
 
     /**
@@ -202,10 +183,7 @@ class mysqld {
      * @param unknown_type $tables
      */
     public function unlock_tables() {
-        if ($this->is_locked) {
-            $this->rq('UNLOCK TABLES');
-            $this->is_locked = false;
-        }
+        
     }
 
     /**
@@ -215,17 +193,9 @@ class mysqld {
      * @return string
      */
     public function string_escape($string, $full_escape=false) {
-
-        if ($full_escape)
-            $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
-
-        if (function_exists('mysqli_real_escape_string')) {
-            return mysql_real_escape_string($string, $this->connection);
-        } else {
-            return mysql_escape_string($string);
-        }
+        return trim($string);
     }
 
 }
-?>
 
+?>

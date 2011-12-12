@@ -109,8 +109,9 @@ class mysqlid {
      * @return unknown
      */
     public function count_rows($query) {
-        $row = mysqli_num_rows($query);
-        return $row;
+        $result = mysqli_query($query, $this->connection);
+        $num_rows = mysqli_num_rows($result);
+        return $num_rows;
     }
 
     /**
@@ -214,18 +215,14 @@ class mysqlid {
      */
     public function string_escape($string, $full_escape=false) {
 
-        $str = '';
-
         if ($full_escape)
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
 
         if (function_exists('mysqli_real_escape_string')) {
-            $str = mysqli_real_escape_string($this->connection, $string);
+            return mysqli_real_escape_string($string, $this->connection);
         } else {
-            $str = mysqli_escape_string($string);
+            return mysqli_escape_string($string);
         }
-
-        return trim($str);
     }
 
 }
