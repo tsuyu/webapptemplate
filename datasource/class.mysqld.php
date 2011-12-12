@@ -90,8 +90,8 @@ class mysqld {
      * @param unknown_type $query
      * @return unknown
      */
-    public function fetchAssoc($result) {
-        return mysql_fetch_assoc($result);
+    public function fetchAssoc() {
+        return mysql_fetch_assoc($this->result);
     }
     
      /**
@@ -99,8 +99,8 @@ class mysqld {
      * @param unknown_type $query
      * @return unknown
      */
-    public function fetchArray($result) {
-        return mysql_fetch_array($result,MYSQL_NUM);
+    public function fetchArray() {
+        return mysql_fetch_array($this->result,MYSQL_NUM);
     }
 
     /**
@@ -108,8 +108,8 @@ class mysqld {
      * @param  string  The query which we send.
      * @return array
      */
-    public function fetchObject($result) {
-        return mysql_fetch_object($result);
+    public function fetchObject() {
+        return mysql_fetch_object($this->result);
     }
 
     /**
@@ -117,8 +117,8 @@ class mysqld {
      * @param unknown_type $query
      * @return unknown
      */
-    public function countRows($result) {
-        return mysql_num_rows($result);
+    public function countRows() {
+        return mysql_num_rows($this->result);
     }
 
     /**

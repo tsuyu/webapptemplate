@@ -49,8 +49,8 @@ class UserApi extends Model {
     
     public function retrieveUser(){
         $query = "SELECT * FROM `user`";
-        $result = $this->db->query($query);
-        echo $this->db->countRows($result);
+        $this->db->query($query);
+        echo $this->db->countRows();
     }
     
     public function updateUser($user){

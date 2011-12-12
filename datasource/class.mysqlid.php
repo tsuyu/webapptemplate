@@ -89,8 +89,8 @@ class mysqlid {
      * @param unknown_type $query
      * @return unknown
      */
-    public function fetchAssoc($result) {
-        return mysqli_fetch_assoc($result);
+    public function fetchAssoc() {
+        return mysqli_fetch_assoc($this->result);
     }
     
     
@@ -99,8 +99,8 @@ class mysqlid {
      * @param unknown_type $query
      * @return unknown
      */
-    public function fetchArray($result) {
-        return mysqli_fetch_array($result,MYSQLI_NUM);
+    public function fetchArray() {
+        return mysqli_fetch_array($this->result,MYSQLI_NUM);
     }
 
     /**
@@ -108,8 +108,8 @@ class mysqlid {
      * @param  string  The query which we send.
      * @return array
      */
-    public function fetchObject($result) {
-        return mysqli_fetch_object($result);
+    public function fetchObject() {
+        return mysqli_fetch_object($this->result);
     }
 
     /**
@@ -117,8 +117,8 @@ class mysqlid {
      * @param unknown_type $query
      * @return unknown
      */
-    public function countRows($result) {
-        return mysqli_num_rows($result);
+    public function countRows() {
+        return mysqli_num_rows($this->result);
     }
 
     /**
