@@ -89,9 +89,18 @@ class mysqlid {
      * @param unknown_type $query
      * @return unknown
      */
-    public function fetchArray($query) {
-        $row = mysqli_fetch_assoc($query);
-        return $row;
+    public function fetchAssoc($result) {
+        return mysqli_fetch_assoc($result);
+    }
+    
+    
+    /**
+     * Enter description here ...
+     * @param unknown_type $query
+     * @return unknown
+     */
+    public function fetchArray($result) {
+        return mysqli_fetch_array($result,MYSQLI_NUM);
     }
 
     /**
@@ -99,8 +108,8 @@ class mysqlid {
      * @param  string  The query which we send.
      * @return array
      */
-    function fetchObject($query) {
-        return mysqli_fetch_object();
+    public function fetchObject($result) {
+        return mysqli_fetch_object($result);
     }
 
     /**
@@ -108,10 +117,8 @@ class mysqlid {
      * @param unknown_type $query
      * @return unknown
      */
-    public function count_rows($query) {
-        $result = mysqli_query($query, $this->connection);
-        $num_rows = mysqli_num_rows($result);
-        return $num_rows;
+    public function countRows($result) {
+        return mysqli_num_rows($result);
     }
 
     /**
@@ -119,8 +126,7 @@ class mysqlid {
      * @return unknown
      */
     public function rows_affected() {
-        $row = mysqli_affected_rows($this->connection);
-        return $row;
+       
     }
 
     /**
@@ -128,8 +134,7 @@ class mysqlid {
      * @return unknown
      */
     public function created_id() {
-        $row = mysqli_insert_id($this->connection);
-        return $row;
+       
     }
 
     /**

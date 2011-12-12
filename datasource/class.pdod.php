@@ -89,8 +89,17 @@ class pdod {
      * @param unknown_type $query
      * @return unknown
      */
-    public function fetchArray($query) {
-        
+    public function fetchAssoc($result) {
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    /**
+     * Enter description here ...
+     * @param unknown_type $query
+     * @return unknown
+     */
+    public function fetchArray($result) {
+        return $result->fetch(PDO::FETCH_NUM);
     }
 
     /**
@@ -98,8 +107,8 @@ class pdod {
      * @param  string  The query which we send.
      * @return array
      */
-    function fetchObject($query) {
-      
+    public function fetchObject($result) {
+       return $result->fetch(PDO::FETCH_OBJ);
     }
 
     /**
@@ -107,9 +116,8 @@ class pdod {
      * @param unknown_type $query
      * @return unknown
      */
-    public function count_rows($query) {
-        $num_rows = $this->connection->query($query)->fetchColumn(); 
-        return count($num_rows);
+    public function countRows($result) {
+        return count($result->fetchAll());
     }
 
     /**

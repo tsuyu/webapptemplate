@@ -34,6 +34,8 @@ class Controller {
                         $user->saveUser($user);
                         break;
                      case 'retrieve':
+                        $user = new Facade('user:default');
+                        $user->retrieveUser();
                         break;
                      case 'update':
                         $user = new Facade('user:default');

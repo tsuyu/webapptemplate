@@ -39,6 +39,10 @@ class Facade extends Classes {
         $this->userapi->saveUser($user);
     }
     
+    public function retrieveUser() {
+        $this->userapi->retrieveUser();
+    }
+    
     public function updateUser($user) {
         $this->userapi->updateUser($user);
     }
