@@ -52,11 +52,12 @@ class mysqlid {
         try {
             if ($verbose) {
                 echo $query;
-                exit();
             }
             $this->result = mysqli_query($this->connection, $this->injection($query));
             if ($this->result) {
                 $this->queries_count++;
+                return $this->result;
+            }else{
                 return $this->result;
             }
         } catch (exception $e) {
