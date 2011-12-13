@@ -54,13 +54,13 @@ class mysqld {
             if ($verbose) {
                 echo $query;
             }
-            
+
             $this->result = mysql_query($this->injection($query), $this->connection);
-            
+
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
-            }else{
+            } else {
                 return $this->result;
             }
         } catch (exception $e) {

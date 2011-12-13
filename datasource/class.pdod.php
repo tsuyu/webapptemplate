@@ -50,7 +50,7 @@ class pdod {
      * @return unknown
      */
     public function query($query, $verbose = FALSE) {
-        
+
         try {
             if ($verbose) {
                 echo $query;
@@ -61,7 +61,7 @@ class pdod {
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
-            }else{
+            } else {
                 return $this->result;
             }
         } catch (exception $e) {
@@ -158,11 +158,11 @@ class pdod {
         if ($full_escape) {
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
         }
-        
+
         if (get_magic_quotes_gpc()) {
             $string = stripslashes($string);
         }
-        
+
         return trim($string);
     }
 

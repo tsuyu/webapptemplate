@@ -13,61 +13,63 @@ require_once '../api/class.userapi.php';
  */
 class Facade extends Classes {
 
-    private $user;
-    private $address;
-    private $userapi;
-    private $util;
+    private $instance;
 
     public function __construct($mode) {
         parent::__construct();
+        $this->instance = array();
         $this->init($mode);
     }
 
     public function userInstance() {
-        return $this->user;
+        return $this->instance['user'];
     }
 
     public function addressInstance() {
-        return $this->address;
+        return $this->instance['address'];
     }
 
     public function utilInstance() {
-        return $this->util;
+        return $this->instance['util'];
     }
 
     public function saveUser($user) {
-        $this->userapi->saveUser($user);
+        $this->instance['userapi']->saveUser($user);
     }
-    
+
     public function retrieveUser() {
-        $this->userapi->retrieveUser();
+        $this->instance['userapi']->retrieveUser();
     }
-    
+
     public function updateUser($user) {
-        $this->userapi->updateUser($user);
+        $this->instance['userapi']->updateUser($user);
     }
-    
+
     public function deleteUser($username) {
-        $this->userapi->deleteUser($username);
+        $this->instance['userapi']->deleteUser($username);
     }
 
     public function init($mode) {
-        $split = explode(':', $mode);
-        foreach ($this->class[$split[0]] as $key => $value) {
-            foreach ($value as $key2 => $class) {
-                if ($key == $split[1]) {
-                    $invoke = strtolower($class);
-                    $this->$invoke = new $class();
+        if (in_array($mode, array_keys($this->class))) {
+            foreach ($this->class[$mode] as $class) {
+                $invoke = strtolower($class);
+                if (!isset($this->instance[$invoke]) && empty($this->instance[$invoke])) {
+                    $this->instance[$invoke] = new $class();
+                }
+            }
+        } else {
+            $classes = explode(",", $mode);
+            foreach ($classes as $class) {
+                $invoke = strtolower($class);
+                if (!isset($this->instance[$invoke]) && empty($this->instance[$invoke])) {
+                    $this->instance[$invoke] = new $class();
                 }
             }
         }
     }
-    
+
     public function __destruct() {
-        unset($this->user);
-        unset($this->address);
-        unset($this->userapi);
-        unset($this->util);
+        unset($this->instance);
     }
 
 }

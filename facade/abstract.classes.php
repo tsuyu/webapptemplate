@@ -6,15 +6,14 @@
  */
 
 abstract class Classes {
-    
+
     protected $class;
-    
+
     public function __construct() {
-        $this->class = array("user"=> array("default" => array("User", "Address", "UserApi"),
-                                            "retrieve" => array("UserApi"),
-                                            "delete" => array("UserApi")),
-                             "other"=>array("default"=>array()));
+        //set the default class instance
+        $this->class = array("user:default" => array("User", "Address", "UserApi"));
     }
+
 }
 
 ?>

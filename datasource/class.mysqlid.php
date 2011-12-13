@@ -57,7 +57,7 @@ class mysqlid {
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
-            }else{
+            } else {
                 return $this->result;
             }
         } catch (exception $e) {
@@ -151,14 +151,14 @@ class mysqlid {
      */
     public function sanitize($string, $full_escape=false) {
 
-        if ($full_escape){
+        if ($full_escape) {
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
         }
-        
+
         if (get_magic_quotes_gpc()) {
             $string = stripslashes($string);
         }
-        
+
         if (function_exists('mysqli_real_escape_string')) {
             return trim(mysqli_real_escape_string($this->connection, $string));
         }

@@ -15,13 +15,13 @@ class Controller {
         $this->message = '';
         $this->_init();
     }
-    
+
     private function _init() {
 
         switch ($this->com) {
             case 'user':
                 switch ($this->action) {
-                   case 'create':
+                    case 'create':
                         $user = new Facade('user:default');
                         $user->userInstance()->setUsername("admin");
                         $user->userInstance()->setName("admin");
@@ -29,15 +29,14 @@ class Controller {
                         $user->userInstance()->setTelno("123456789");
                         $user->userInstance()->setPassword("123456");
                         $user->userInstance()->setIsActive(1);
-                        $user->userInstance()->setPermission(4);
                         $user->addressInstance()->setAddress1("Kg. Cherating");
                         $user->saveUser($user);
                         break;
-                     case 'retrieve':
-                        $user = new Facade('user:retrieve');
+                    case 'retrieve':
+                        $user = new Facade('UserApi');
                         $user->retrieveUser();
                         break;
-                     case 'update':
+                    case 'update':
                         $user = new Facade('user:default');
                         $user->userInstance()->setName("admin");
                         $user->userInstance()->setEmail("admin@localhost.com");
@@ -48,9 +47,9 @@ class Controller {
                         $user->addressInstance()->setAddress1("Kg. Cherating");
                         $user->updateUser($user);
                         break;
-                     case 'delete':
-                        $user = new Facade('user:delete');
-                        //$user->deleteUser("admin");
+                    case 'delete':
+                        $user = new Facade('UserApi');
+                        $user->deleteUser("admin");
                         break;
                 }
                 break;
