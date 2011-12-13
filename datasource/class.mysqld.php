@@ -149,10 +149,14 @@ class mysqld {
      * @param  bool    If escaping of % and _ is also needed
      * @return string
      */
-    public function stringEscape($string, $full_escape=false) {
+    public function sanitize($string, $full_escape=false) {
 
         if ($full_escape) {
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
+        }
+
+        if (get_magic_quotes_gpc()) {
+            $string = stripslashes($string);
         }
 
         if (function_exists('mysql_real_escape_string')) {
