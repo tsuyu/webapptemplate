@@ -19,36 +19,13 @@
 
 class pdod {
 
-    private $dbhost;
-    private $dbuser;
-    private $dbpassword;
-    private $dbschema;
-    private $dbprefix;
     private $connection;
     private $queries_count;
     private $result;
 
-    /**
-     * Is there any locked tables right now?
-     * @var boolean
-     */
-    private $is_locked = false;
-
     public function __construct($config) {
-        $this->dbhost = $config['dbhost'];
-        $this->dbuser = $config['dbuser'];
-        $this->dbpassword = $config['dbpassword'];
-        $this->dbschema = $config['dbschema'];
-        $this->dbprefix = $config['dbprefix'];
-        $this->open_connection();
-    }
-
-    /**
-     * Enter description here ...
-     */
-    private function open_connection() {
         try {
-            $this->connection = new PDO("mysql:host=" . $this->dbhost . ";dbname=" . $this->dbschema . "", $this->dbuser, $this->dbpassword);
+            $this->connection = new PDO("mysql:host=" . $config['dbhost'] . ";dbname=" . $config['dbschema'] . "", $config['dbuser'], $config['dbpassword']);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
@@ -72,9 +49,16 @@ class pdod {
      * @param unknown_type $query
      * @return unknown
      */
-    public function query($query) {
+    public function query($query, $verbose = FALSE) {
+        
         try {
-            $this->result = $this->connection->query($query);
+            if ($verbose) {
+                echo $query;
+                exit();
+            }
+
+            $this->result = $this->connection->query($this->injection($query));
+
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
@@ -82,6 +66,11 @@ class pdod {
         } catch (exception $e) {
             throw $e;
         }
+    }
+
+    public function injection($query) {
+        $array_injection = array("#", "--", "\\", "//", ";", "/*", "*/", "drop", "truncate");
+        return trim(str_replace($array_injection, "", strtolower($query)));
     }
 
     /**
@@ -92,7 +81,7 @@ class pdod {
     public function fetchAssoc() {
         return $this->result->fetch(PDO::FETCH_ASSOC);
     }
-    
+
     /**
      * Enter description here ...
      * @param unknown_type $query
@@ -108,7 +97,7 @@ class pdod {
      * @return array
      */
     public function fetchObject() {
-       return $this->result->fetch(PDO::FETCH_OBJ);
+        return $this->result->fetch(PDO::FETCH_OBJ);
     }
 
     /**
@@ -121,25 +110,17 @@ class pdod {
     }
 
     /**
-     * Enter description here ...
+     * Not all database engines support this feature.
      * @return unknown
      */
-    public function rows_affected() {
-      
-    }
-
-    /**
-     * Enter description here ...
-     * @return unknown
-     */
-    public function created_id() {
-      
+    public function createdId() {
+        return $this->result->lastInsertId();
     }
 
     /**
      * Enter description here ...
      */
-    public function commit_start() {
+    public function commitStart() {
         $this->connection->beginTransaction();
     }
 
@@ -158,40 +139,11 @@ class pdod {
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return Ambigous <multitype:, unknown>
-     */
-    public function arrayData($query) {
-       
-    }
-
-    /**
      * Returns the total number of executed queries. Usually goes to the end of scripts.
      * @return integer
      */
-    public function num_queries() {
+    public function numQueries() {
         return $this->queries_count;
-    }
-
-    public function free_result() {
-       
-    }
-
-    /**
-     * Lock database table(s)
-     * @param unknown_type $tables
-     */
-    public function lock_tables($tables) {
-        
-    }
-
-    /**
-     * Unlock database table(s)
-     * @param unknown_type $tables
-     */
-    public function unlock_tables() {
-        
     }
 
     /**
@@ -200,7 +152,11 @@ class pdod {
      * @param  bool    If escaping of % and _ is also needed
      * @return string
      */
-    public function string_escape($string, $full_escape=false) {
+    public function stringEscape($string, $full_escape=false) {
+
+        if ($full_escape) {
+            $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
+        }
         return trim($string);
     }
 

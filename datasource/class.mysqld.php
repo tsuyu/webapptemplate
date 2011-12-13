@@ -19,38 +19,14 @@
 
 class mysqld {
 
-    private $dbhost;
-    private $dbuser;
-    private $dbpassword;
-    private $dbschema;
-    private $dbprefix;
     private $connection;
     private $queries_count;
     private $result;
 
-    /**
-     * Is there any locked tables right now?
-     * @var boolean
-     */
-    private $is_locked = false;
-
     public function __construct($config) {
-        $this->dbhost = $config['dbhost'];
-        $this->dbuser = $config['dbuser'];
-        $this->dbpassword = $config['dbpassword'];
-        $this->dbschema = $config['dbschema'];
-        $this->dbprefix = $config['dbprefix'];
-        $this->open_connection();
-    }
-
-    /**
-     * Enter description here ...
-     */
-    private function open_connection() {
         try {
-            $this->connection = mysql_connect($this->dbhost, $this->dbuser, $this->
-                    dbpassword);
-            mysql_select_db($this->dbschema);
+            $this->connection = mysql_connect($config['dbhost'], $config['dbuser'], $config['dbpassword']);
+            mysql_select_db($config['dbschema']);
         } catch (exception $e) {
             throw $e;
         }
@@ -73,9 +49,13 @@ class mysqld {
      * @param unknown_type $query
      * @return unknown
      */
-    public function query($query) {
+    public function query($query, $verbose = FALSE) {
         try {
-            $this->result = mysql_query($query, $this->connection);
+            if ($verbose) {
+                echo $query;
+                exit();
+            }
+            $this->result = mysql_query($this->injection($query), $this->connection);
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
@@ -83,6 +63,11 @@ class mysqld {
         } catch (exception $e) {
             throw $e;
         }
+    }
+
+    public function injection($query) {
+        $array_injection = array("#", "--", "\\", "//", ";", "/*", "*/", "drop", "truncate");
+        return trim(str_replace($array_injection, "", strtolower($query)));
     }
 
     /**
@@ -93,14 +78,14 @@ class mysqld {
     public function fetchAssoc() {
         return mysql_fetch_assoc($this->result);
     }
-    
-     /**
+
+    /**
      * Enter description here ...
      * @param unknown_type $query
      * @return unknown
      */
     public function fetchArray() {
-        return mysql_fetch_array($this->result,MYSQL_NUM);
+        return mysql_fetch_array($this->result, MYSQL_NUM);
     }
 
     /**
@@ -125,22 +110,14 @@ class mysqld {
      * Enter description here ...
      * @return unknown
      */
-    public function rows_affected() {
-        
-    }
-
-    /**
-     * Enter description here ...
-     * @return unknown
-     */
-    public function created_id() {
-        
+    public function createdId() {
+        mysql_insert_id();
     }
 
     /**
      * Enter description here ...
      */
-    public function commit_start() {
+    public function commitStart() {
         mysql_query("SET autocommit=0", $this->connection);
     }
 
@@ -159,57 +136,11 @@ class mysqld {
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return Ambigous <multitype:, unknown>
-     */
-    public function arrayData($query) {
-        $data = array();
-        $this->result = $this->query($query);
-        while ($row = $this->fetchArray($this->result)) {
-            $data[] = $row;
-        }
-        return $data;
-    }
-
-    /**
      * Returns the total number of executed queries. Usually goes to the end of scripts.
      * @return integer
      */
-    public function num_queries() {
+    public function numQueries() {
         return $this->queries_count;
-    }
-
-    public function free_result() {
-        mysql_free_result($this->result);
-    }
-
-    /**
-     * Lock database table(s)
-     * @param unknown_type $tables
-     */
-    public function lock_tables($tables) {
-        if (is_array($tables) && count($tables) > 0) {
-            $mysql = '';
-
-            foreach ($tables as $name => $type) {
-                $mysql.=(!empty($mysql) ? ', ' : '') . '' . $name . ' ' . $type . '';
-            }
-
-            $this->rq('LOCK TABLES ' . $mysql . '');
-            $this->is_locked = true;
-        }
-    }
-
-    /**
-     * Unlock database table(s)
-     * @param unknown_type $tables
-     */
-    public function unlock_tables() {
-        if ($this->is_locked) {
-            $this->rq('UNLOCK TABLES');
-            $this->is_locked = false;
-        }
     }
 
     /**
@@ -218,15 +149,14 @@ class mysqld {
      * @param  bool    If escaping of % and _ is also needed
      * @return string
      */
-    public function string_escape($string, $full_escape=false) {
+    public function stringEscape($string, $full_escape=false) {
 
-        if ($full_escape)
+        if ($full_escape) {
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
+        }
 
-        if (function_exists('mysqli_real_escape_string')) {
-            return mysql_real_escape_string($string, $this->connection);
-        } else {
-            return mysql_escape_string($string);
+        if (function_exists('mysql_real_escape_string')) {
+            return trim(mysql_real_escape_string($string, $this->connection));
         }
     }
 

@@ -14,30 +14,30 @@ class UserApi extends Model {
     }
 
     public function saveUser($user) {
-
-        $this->db->commit_start();
-
+        
+        $this->db->commitStart();
+        
         $query = sprintf('INSERT INTO `user` (`username`, `name`,`email`,`telno`,' .
                 '`password`,`isactive`,`permission`) VALUES ("%s", "%s", "%s", "%s", "%s", %d, %d)', 
-                $this->db->string_escape($user->userInstance()->getUsername()),
-                $this->db->string_escape($user->userInstance()->getName()),
-                $this->db->string_escape($user->userInstance()->getEmail()),
-                $this->db->string_escape($user->userInstance()->getTelNo()),
-                $this->db->string_escape($user->userInstance()->getPassword()),
-                $this->db->string_escape($user->userInstance()->getIsActive()),
-                $this->db->string_escape($user->userInstance()->getPermission())
+                $this->db->stringEscape($user->userInstance()->getUsername()),
+                $this->db->stringEscape($user->userInstance()->getName()),
+                $this->db->stringEscape($user->userInstance()->getEmail()),
+                $this->db->stringEscape($user->userInstance()->getTelNo()),
+                $this->db->stringEscape($user->userInstance()->getPassword()),
+                $this->db->stringEscape($user->userInstance()->getIsActive()),
+                $this->db->stringEscape($user->userInstance()->getPermission())
         );
-
+        
         if (!$this->db->query($query)) {
             echo 'failed';
             exit ();
         }
 
         $query = sprintf('INSERT INTO `address` (`address1`,`username`) VALUES ("%s", "%s")', 
-                $this->db->string_escape($user->addressInstance()->getAddress1()), 
-                $this->db->string_escape($user->userInstance()->getUsername())
+                $this->db->stringEscape($user->addressInstance()->getAddress1()), 
+                $this->db->stringEscape($user->userInstance()->getUsername())
         );
-
+      
         if (!$this->db->query($query)) {
             echo 'failed';
             exit ();
@@ -55,17 +55,17 @@ class UserApi extends Model {
     
     public function updateUser($user){
         
-        $this->db->commit_start();
+        $this->db->commitStart();
         
         $query = sprintf('UPDATE `user` SET `name` = "%s", `email` = "%s", `telno` = "%s",' .
 			'`password` = "%s", `isactive` = %d, `permission` = %d WHERE `username` = "%s"', 
-                $this->db->string_escape($user->userInstance()->getName()),
-                $this->db->string_escape($user->userInstance()->getEmail()),
-                $this->db->string_escape($user->userInstance()->getTelNo()),
-                $this->db->string_escape($user->userInstance()->getPassword()),
-                $this->db->string_escape($user->userInstance()->getIsActive()),
-                $this->db->string_escape($user->userInstance()->getPermission()),
-                $this->db->string_escape($user->userInstance()->getUsername())
+                $this->db->stringEscape($user->userInstance()->getName()),
+                $this->db->stringEscape($user->userInstance()->getEmail()),
+                $this->db->stringEscape($user->userInstance()->getTelNo()),
+                $this->db->stringEscape($user->userInstance()->getPassword()),
+                $this->db->stringEscape($user->userInstance()->getIsActive()),
+                $this->db->stringEscape($user->userInstance()->getPermission()),
+                $this->db->stringEscape($user->userInstance()->getUsername())
         );
         
         if (!$this->db->query($query)) {
@@ -77,8 +77,8 @@ class UserApi extends Model {
         }
         
         $query = sprintf('UPDATE `address` SET `address1` = "%s" WHERE `username` = "%s"', 
-                $this->db->string_escape($user->addressInstance()->getAddress1()), 
-                $this->db->string_escape($user->userInstance()->getUsername())
+                $this->db->stringEscape($user->addressInstance()->getAddress1()), 
+                $this->db->stringEscape($user->userInstance()->getUsername())
         );
         
         if (!$this->db->query($query)) {
@@ -94,7 +94,7 @@ class UserApi extends Model {
     public function deleteUser($username){
         
         $query = sprintf('DELETE FROM `user` WHERE `username` = "%s"', 
-               $this->db->string_escape($username)
+               $this->db->stringEscape($username)
         );
         
         if (!$this->db->query($query)) {

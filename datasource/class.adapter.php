@@ -6,18 +6,18 @@
 
 class Db {
 
-    public function &getInstance() {
+    final public function &getInstance() {
         
         static $obj;
         $config = array();
-        $parse_ini = parse_ini_file('config.ini', 1);
-        
+        $parse_ini = parse_ini_file('config.ini', TRUE);
         $config['dbhost'] = $parse_ini['mysql']['dbhost'];
         $config['dbuser'] = $parse_ini['mysql']['dbuser'];
         $config['dbpassword'] = $parse_ini['mysql']['dbpassword'];
         $config['dbschema'] = $parse_ini['mysql']['dbschema'];
         $config['dbprefix'] = $parse_ini['mysql']['dbprefix'];
         $driver = $parse_ini['dbdriver']['dbdriver'];
+        
         require_once 'class.'.$driver.'.php';
             
         if (!isset($obj)) {

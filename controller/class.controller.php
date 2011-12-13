@@ -34,7 +34,7 @@ class Controller {
                         $user->saveUser($user);
                         break;
                      case 'retrieve':
-                        $user = new Facade('user:default');
+                        $user = new Facade('user:retrieve');
                         $user->retrieveUser();
                         break;
                      case 'update':
@@ -53,28 +53,6 @@ class Controller {
                         //$user->deleteUser("admin");
                         break;
                 }
-                break;
-            case 'login':
-
-                if ($_REQUEST['submitLogin']) {
-                    $user = $this->facade->getUser($_REQUEST['username']);
-                    if ($user) {
-                        //print_r($user);
-                        if ($user[0]->username == $_REQUEST['username'] && $user[0]->password == $_REQUEST['password']) {
-                            //	if($user[0]->permission & $this->isUser){
-                            $_SESSION['user'] = $user;
-                            header("Location:index.php?com=otherpage");
-                            //}
-                        } else {
-                            header("Location:index.php?com=login");
-                            $this->facade->utilInstance()->flash_warning("Login Failed!!");
-                            exit;
-                        }
-                    }
-                }
-                break;
-            case 'logout':
-                $this->logout();
                 break;
         }
     }

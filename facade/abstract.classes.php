@@ -10,7 +10,8 @@ abstract class Classes {
     protected $class;
     
     public function __construct() {
-        $this->class = array("user"=> array("default" => array("User", "Address", "Util", "UserApi"),
+        $this->class = array("user"=> array("default" => array("User", "Address", "UserApi"),
+                                            "retrieve" => array("UserApi"),
                                             "delete" => array("UserApi")),
                              "other"=>array("default"=>array()));
     }
