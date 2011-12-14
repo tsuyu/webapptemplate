@@ -1,6 +1,5 @@
 <?php
 
-require_once 'abstract.classes.php';
 require_once '../entity/class.address.php';
 require_once '../entity/class.user.php';
 require_once '../util/class.util.php';
@@ -11,13 +10,14 @@ require_once '../api/class.userapi.php';
  * @author tsuyu
  *
  */
-class Facade extends Classes {
+class UserFacade {
 
     private $instance;
+    private $classes;
 
     public function __construct($mode) {
-        parent::__construct();
         $this->instance = array();
+        $this->classes = array("User", "Address", "UserApi");
         $this->init($mode);
     }
 
@@ -49,9 +49,9 @@ class Facade extends Classes {
         $this->instance['userapi']->deleteUser($username);
     }
 
-    public function init($mode) {
-        if (in_array($mode, array_keys($this->class))) {
-            foreach ($this->class[$mode] as $class) {
+    public function init($mode = NULL) {
+        if (is_null($mode)) {
+            foreach ($this->classes as $class) {
                 $invoke = strtolower($class);
                 if (!isset($this->instance[$invoke]) && empty($this->instance[$invoke])) {
                     $this->instance[$invoke] = new $class();

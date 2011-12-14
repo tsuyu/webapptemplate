@@ -1,6 +1,6 @@
 <?php
 
-include '../facade/class.facade.php';
+include '../facade/class.userfacade.php';
 
 class Controller {
 
@@ -22,7 +22,7 @@ class Controller {
             case 'user':
                 switch ($this->action) {
                     case 'create':
-                        $user = new Facade('user:default');
+                        $user = new UserFacade();
                         $user->userInstance()->setUsername("admin");
                         $user->userInstance()->setName("admin");
                         $user->userInstance()->setEmail("admin@localhost.com");
@@ -33,11 +33,11 @@ class Controller {
                         $user->saveUser($user);
                         break;
                     case 'retrieve':
-                        $user = new Facade('UserApi');
+                        $user = new UserFacade('UserApi');
                         $user->retrieveUser();
                         break;
                     case 'update':
-                        $user = new Facade('user:default');
+                        $user = new UserFacade();
                         $user->userInstance()->setName("admin");
                         $user->userInstance()->setEmail("admin@localhost.com");
                         $user->userInstance()->setTelno("123456789");
@@ -48,7 +48,7 @@ class Controller {
                         $user->updateUser($user);
                         break;
                     case 'delete':
-                        $user = new Facade('UserApi');
+                        $user = new UserFacade('UserApi');
                         $user->deleteUser("admin");
                         break;
                 }
