@@ -1,6 +1,6 @@
 <?php
 
-include '../facade/class.userfacade.php';
+include './facade/class.userfacade.php';
 
 class Controller {
 
@@ -8,10 +8,10 @@ class Controller {
     public $action;
     public $message;
 
-    public function __construct($request) {
+    public function __construct() {
         session_start();
-        $this->com = $request['com'];
-        $this->action = $request['action'];
+        $this->com = $_GET['com'];
+        $this->action = $_GET['action'];
         $this->message = '';
         $this->_init();
     }
@@ -52,6 +52,25 @@ class Controller {
                         $user->deleteUser("admin");
                         break;
                 }
+                break;
+            case 'login':
+                if ($_POST['submitLogin']) {
+                    $user = new UserFacade('Util,UserApi');
+                    $login = $user->retrieveUser($_POST['username']);
+                    if (!empty($login)) {
+                        if ($login['username'] == $_POST['username'] && $login['password'] == $_POST['password']) {
+                            session_start();
+                            $_SESSION['user']['username'] = $login['username'];
+                            $user->utilInstance()->redirect("index.php?com=otherpage");
+                        } else {
+                            $user->utilInstance()->redirect("index.php?com=login");
+                            exit;
+                        }
+                    }
+                }
+                break;
+            case 'logout':
+                $this->logout();
                 break;
         }
     }

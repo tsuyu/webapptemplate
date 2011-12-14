@@ -1,9 +1,9 @@
 <?php
 
-require_once '../entity/class.address.php';
-require_once '../entity/class.user.php';
-require_once '../util/class.util.php';
-require_once '../api/class.userapi.php';
+require_once 'entity/class.address.php';
+require_once 'entity/class.user.php';
+require_once 'util/class.util.php';
+require_once 'api/class.userapi.php';
 
 /**
  * Enter description here ...
@@ -17,6 +17,7 @@ class UserFacade {
 
     public function __construct($mode) {
         $this->instance = array();
+        //default class instance
         $this->classes = array("User", "Address", "UserApi");
         $this->init($mode);
     }
@@ -37,8 +38,8 @@ class UserFacade {
         $this->instance['userapi']->saveUser($user);
     }
 
-    public function retrieveUser() {
-        $this->instance['userapi']->retrieveUser();
+    public function retrieveUser($username) {
+        return $this->instance['userapi']->retrieveUser($username);
     }
 
     public function updateUser($user) {
