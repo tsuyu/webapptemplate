@@ -1,0 +1,18 @@
+[15-Dec-2011 20:50:33] PHP Notice:  Undefined index: action in D:\xampp\htdocs\webapptemplate\controller\class.controller.php on line 14
+[15-Dec-2011 20:50:33] PHP Stack trace:
+[15-Dec-2011 20:50:33] PHP   1. {main}() D:\xampp\htdocs\webapptemplate\index.php:0
+[15-Dec-2011 20:50:33] PHP   2. Controller->__construct() D:\xampp\htdocs\webapptemplate\index.php:14
+[15-Dec-2011 20:50:33] PHP Notice:  Undefined index: submitLogin in D:\xampp\htdocs\webapptemplate\controller\class.controller.php on line 57
+[15-Dec-2011 20:50:33] PHP Stack trace:
+[15-Dec-2011 20:50:33] PHP   1. {main}() D:\xampp\htdocs\webapptemplate\index.php:0
+[15-Dec-2011 20:50:33] PHP   2. Controller->__construct() D:\xampp\htdocs\webapptemplate\index.php:14
+[15-Dec-2011 20:50:33] PHP   3. Controller->_init() D:\xampp\htdocs\webapptemplate\controller\class.controller.php:16
+[15-Dec-2011 20:50:33] PHP Notice:  Undefined index: user in D:\xampp\htdocs\webapptemplate\template\template.php on line 18
+[15-Dec-2011 20:50:33] PHP Stack trace:
+[15-Dec-2011 20:50:33] PHP   1. {main}() D:\xampp\htdocs\webapptemplate\index.php:0
+[15-Dec-2011 20:50:33] PHP   2. include() D:\xampp\htdocs\webapptemplate\index.php:16
+[15-Dec-2011 20:50:33] PHP Notice:  Undefined index: user in D:\xampp\htdocs\webapptemplate\controller\class.controller.php on line 87
+[15-Dec-2011 20:50:33] PHP Stack trace:
+[15-Dec-2011 20:50:33] PHP   1. {main}() D:\xampp\htdocs\webapptemplate\index.php:0
+[15-Dec-2011 20:50:33] PHP   2. include() D:\xampp\htdocs\webapptemplate\index.php:16
+[15-Dec-2011 20:50:33] PHP   3. Controller->loadMenu() D:\xampp\htdocs\webapptemplate\template\template.php:33

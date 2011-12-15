@@ -1,8 +1,8 @@
 <?php
 
+require_once 'abstract.facade.php';
 require_once 'entity/class.address.php';
 require_once 'entity/class.user.php';
-require_once 'util/class.util.php';
 require_once 'api/class.userapi.php';
 
 /**
@@ -10,14 +10,11 @@ require_once 'api/class.userapi.php';
  * @author tsuyu
  *
  */
-class UserFacade {
-
-    private $instance;
-    private $classes;
+class UserFacade extends Facade {
 
     public function __construct($mode) {
         $this->instance = array();
-        //default class instance
+        //default class
         $this->classes = array("User", "Address", "UserApi");
         $this->init($mode);
     }
@@ -30,12 +27,8 @@ class UserFacade {
         return $this->instance['address'];
     }
 
-    public function utilInstance() {
-        return $this->instance['util'];
-    }
-
-    public function saveUser($user) {
-        $this->instance['userapi']->saveUser($user);
+    public function createUser($user) {
+        $this->instance['userapi']->createUser($user);
     }
 
     public function retrieveUser($username) {
@@ -48,25 +41,6 @@ class UserFacade {
 
     public function deleteUser($username) {
         $this->instance['userapi']->deleteUser($username);
-    }
-
-    public function init($mode = NULL) {
-        if (is_null($mode)) {
-            foreach ($this->classes as $class) {
-                $invoke = strtolower($class);
-                if (!isset($this->instance[$invoke]) && empty($this->instance[$invoke])) {
-                    $this->instance[$invoke] = new $class();
-                }
-            }
-        } else {
-            $classes = explode(",", $mode);
-            foreach ($classes as $class) {
-                $invoke = strtolower($class);
-                if (!isset($this->instance[$invoke]) && empty($this->instance[$invoke])) {
-                    $this->instance[$invoke] = new $class();
-                }
-            }
-        }
     }
 
     public function __destruct() {

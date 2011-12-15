@@ -1,13 +1,16 @@
 <?php
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
+ * 
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
 class Db {
 
     final public function &getInstance() {
-        
+
         static $obj;
         $config = array();
         $parse_ini = parse_ini_file('config.ini', TRUE);
@@ -17,14 +20,15 @@ class Db {
         $config['dbschema'] = $parse_ini['mysql']['dbschema'];
         $config['dbprefix'] = $parse_ini['mysql']['dbprefix'];
         $driver = $parse_ini['dbdriver']['dbdriver'];
-        
-        require_once 'class.'.$driver.'.php';
-            
+
+        require_once 'class.' . $driver . '.php';
+
         if (!isset($obj)) {
-            $obj = &new $driver($config);
+            $obj = new $driver($config);
         }
         return $obj;
     }
+
 }
 
 ?>

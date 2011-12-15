@@ -15,14 +15,34 @@
  *      along with this program; if not, write to the Free Software
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  *      MA 02110-1301, USA.
+ * 
+ *      @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
 class mysqld {
 
+    /**
+     * 	Connection link.
+     * 	@var string
+     */
     private $connection;
+
+    /**
+     * 	Total query
+     * 	@var string
+     */
     private $queries_count;
+
+    /**
+     * 	Result of query
+     * 	@var string
+     */
     private $result;
 
+    /**
+     * The Constructor. Initializes a database connection and selects database.
+     * @param  array  config
+     */
     public function __construct($config) {
         try {
             $this->connection = mysql_connect($config['dbhost'], $config['dbuser'], $config['dbpassword']);
@@ -33,8 +53,9 @@ class mysqld {
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
+     * Closes the MySQL connection.
+     * @param  none
+     * @return boolean
      */
     public function close() {
         try {
@@ -45,9 +66,9 @@ class mysqld {
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return unknown
+     * Send a MySQL query.
+     * @param  string  Query to run
+     * @return mixed
      */
     public function query($query, $verbose = FALSE) {
         try {
@@ -55,37 +76,30 @@ class mysqld {
                 echo $query;
             }
 
-            $this->result = mysql_query($this->injection($query), $this->connection);
+            $this->result = mysql_query(Util::injection($query), $this->connection);
 
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
             } else {
-                return $this->result;
+                return FALSE;
             }
         } catch (exception $e) {
             throw $e;
         }
     }
 
-    public function injection($query) {
-        $array_injection = array("#", "--", "\\", "//", ";", "/*", "*/", "drop", "truncate");
-        return trim(str_replace($array_injection, "", strtolower($query)));
-    }
-
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return unknown
+     * Fetch a result row as an associative array.
+     * @return array
      */
     public function fetchAssoc() {
         return mysql_fetch_assoc($this->result);
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return unknown
+     * Fetch a result row as a numeric array.
+     * @return array
      */
     public function fetchArray() {
         return mysql_fetch_array($this->result, MYSQL_NUM);
@@ -93,7 +107,6 @@ class mysqld {
 
     /**
      * Fetch a result row as an object
-     * @param  string  The query which we send.
      * @return array
      */
     public function fetchObject() {
@@ -101,20 +114,19 @@ class mysqld {
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return unknown
+     * Returns the number of rows from the executed query.
+     * @return integer
      */
     public function countRows() {
         return mysql_num_rows($this->result);
     }
 
     /**
-     * Enter description here ...
-     * @return unknown
+     * Returns the last unique ID (auto_increment field) from the last inserted row.
+     * @return  integer
      */
     public function createdId() {
-        mysql_insert_id();
+        return (int) mysql_insert_id();
     }
 
     /**
@@ -143,7 +155,15 @@ class mysqld {
      * @return integer
      */
     public function numQueries() {
-        return $this->queries_count;
+        return (int) $this->queries_count;
+    }
+
+    /**
+     * Retuns the number of rows affected by last used query.
+     * @return integer
+     */
+    public function rowsAffected() {
+        return (int) mysql_affected_rows($this->connection);
     }
 
     /**
@@ -156,13 +176,9 @@ class mysqld {
 
         if ($full_escape) {
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
-        }
-
-        if (get_magic_quotes_gpc()) {
+        } elseif (get_magic_quotes_gpc()) {
             $string = stripslashes($string);
-        }
-
-        if (function_exists('mysql_real_escape_string')) {
+        } elseif (function_exists('mysql_real_escape_string')) {
             return trim(mysql_real_escape_string($string, $this->connection));
         }
     }

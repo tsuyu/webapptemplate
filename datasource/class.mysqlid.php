@@ -15,14 +15,34 @@
  *      along with this program; if not, write to the Free Software
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  *      MA 02110-1301, USA.
+ * 
+ *      @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
 class mysqlid {
 
+    /**
+     * 	Connection link.
+     * 	@var string
+     */
     private $connection;
+
+    /**
+     * 	Total query
+     * 	@var string
+     */
     private $queries_count;
+
+    /**
+     * 	Result of query
+     * 	@var string
+     */
     private $result;
 
+    /**
+     * The Constructor. Initializes a database connection and selects database.
+     * @param  array  config
+     */
     public function __construct($config) {
         try {
             $this->connection = mysqli_connect($config['dbhost'], $config['dbuser'], $config['dbpassword'], $config['dbschema']);
@@ -32,8 +52,9 @@ class mysqlid {
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
+     * Closes the MySQL connection.
+     * @param  none
+     * @return boolean
      */
     public function close() {
         try {
@@ -44,45 +65,38 @@ class mysqlid {
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return unknown
+     * Send a MySQL query.
+     * @param  string  Query to run
+     * @return mixed
      */
     public function query($query, $verbose = FALSE) {
         try {
             if ($verbose) {
                 echo $query;
             }
-            $this->result = mysqli_query($this->connection, $this->injection($query));
+            $this->result = mysqli_query($this->connection, Util::injection($query));
             if ($this->result) {
                 $this->queries_count++;
                 return $this->result;
             } else {
-                return $this->result;
+                return FALSE;
             }
         } catch (exception $e) {
             throw $e;
         }
     }
 
-    public function injection($query) {
-        $array_injection = array("#", "--", "\\", "//", ";", "/*", "*/", "drop", "truncate");
-        return trim(str_replace($array_injection, "", strtolower($query)));
-    }
-
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return unknown
+     * Fetch a result row as an associative array.
+     * @return array
      */
     public function fetchAssoc() {
         return mysqli_fetch_assoc($this->result);
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return unknown
+     * Fetch a result row as a numeric array.
+     * @return array
      */
     public function fetchArray() {
         return mysqli_fetch_array($this->result, MYSQLI_NUM);
@@ -90,7 +104,6 @@ class mysqlid {
 
     /**
      * Fetch a result row as an object
-     * @param  string  The query which we send.
      * @return array
      */
     public function fetchObject() {
@@ -98,20 +111,19 @@ class mysqlid {
     }
 
     /**
-     * Enter description here ...
-     * @param unknown_type $query
-     * @return unknown
+     * Returns the number of rows from the executed query.
+     * @return integer
      */
     public function countRows() {
         return mysqli_num_rows($this->result);
     }
 
     /**
-     * Enter description here ...
-     * @return unknown
+     * Returns the last unique ID (auto_increment field) from the last inserted row.
+     * @return  integer
      */
     public function createdId() {
-        return mysqli_insert_id();
+        return (int) mysqli_insert_id();
     }
 
     /**
@@ -144,6 +156,14 @@ class mysqlid {
     }
 
     /**
+     * Retuns the number of rows affected by last used query.
+     * @return integer
+     */
+    public function rowsAffected() {
+        return (int) mysqli_affected_rows($this->connection);
+    }
+
+    /**
      * Escapes a value to make it safe for using in queries.
      * @param  string  String to be escaped
      * @param  bool    If escaping of % and _ is also needed
@@ -153,13 +173,9 @@ class mysqlid {
 
         if ($full_escape) {
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
-        }
-
-        if (get_magic_quotes_gpc()) {
+        } elseif (get_magic_quotes_gpc()) {
             $string = stripslashes($string);
-        }
-
-        if (function_exists('mysqli_real_escape_string')) {
+        } elseif (function_exists('mysqli_real_escape_string')) {
             return trim(mysqli_real_escape_string($this->connection, $string));
         }
     }

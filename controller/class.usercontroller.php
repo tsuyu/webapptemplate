@@ -1,18 +1,15 @@
 <?php
 
 include './facade/class.userfacade.php';
+include 'abstract.controller.php';
 
-class Controller {
-
-    public $com;
-    public $action;
-    public $message;
+class UserController extends Controller {
 
     public function __construct() {
         session_start();
         $this->com = $_GET['com'];
         $this->action = $_GET['action'];
-        $this->message = '';
+        $this->message = NULL;
         $this->_init();
     }
 
@@ -30,7 +27,7 @@ class Controller {
                         $user->userInstance()->setPassword("123456");
                         $user->userInstance()->setIsActive(1);
                         $user->addressInstance()->setAddress1("Kg. Cherating");
-                        $user->saveUser($user);
+                        $user->createUser($user);
                         break;
                     case 'retrieve':
                         $user = new UserFacade('UserApi');
@@ -55,15 +52,15 @@ class Controller {
                 break;
             case 'login':
                 if ($_POST['submitLogin']) {
-                    $user = new UserFacade('Util,UserApi');
+                    $user = new UserFacade('UserApi');
                     $login = $user->retrieveUser($_POST['username']);
                     if (!empty($login)) {
                         if ($login['username'] == $_POST['username'] && $login['password'] == $_POST['password']) {
                             session_start();
                             $_SESSION['user']['username'] = $login['username'];
-                            $user->utilInstance()->redirect("index.php?com=otherpage");
+                            Util::redirect("index.php?com=otherpage");
                         } else {
-                            $user->utilInstance()->redirect("index.php?com=login");
+                            Util::redirect("index.php?com=login");
                             exit;
                         }
                     }
@@ -73,14 +70,6 @@ class Controller {
                 $this->logout();
                 break;
         }
-    }
-
-    public function logout() {
-        $_SESSION = array();
-        session_unset();
-        session_destroy();
-        header("Location:index.php");
-        exit();
     }
 
     public function loadMenu() {
@@ -105,25 +94,26 @@ LIST;
     public function loadForm() {
         switch ($this->com) {
             case "login":
-                include 'view/loginform.php';
+                include 'view/user/loginform.php';
                 break;
             case"user":
                 switch ($this->action) {
                     case "view":
                         if ($_SESSION['user'] || $_SESSION['user'][0]->username == $_REQUEST['username']) {
-                            include 'view/adduser.php';
+                            include 'view/user/adduser.php';
                         }
                         break;
                 }
                 break;
             case "otherpage":
-                include 'view/otherpage.php';
+                include 'view/user/otherpage.php';
                 break;
             default:
-                include 'view/main.php';
+                include 'view/user/main.php';
                 break;
         }
     }
 
 }
 
+?>

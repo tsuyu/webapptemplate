@@ -1,10 +1,11 @@
 <?php
 
-require_once 'datasource/class.adapter.php';
 require_once 'abstract.model.php';
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
+ * 
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
 class UserApi extends Model {
@@ -13,7 +14,7 @@ class UserApi extends Model {
         parent::__construct();
     }
 
-    public function saveUser($user) {
+    public function createUser($user) {
 
         $this->db->commitStart();
 
