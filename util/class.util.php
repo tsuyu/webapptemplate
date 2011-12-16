@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -118,7 +117,7 @@ class Util {
             error_reporting(E_ALL ^ E_NOTICE);
             ini_set('display_errors', 'Off');
             ini_set('log_errors', 'On');
-            ini_set('error_log', SERVER_ROOT.'/tmp/logs/error.log');
+            ini_set('error_log', SERVER_ROOT.'tmp/logs/error.log');
         }
     }
 

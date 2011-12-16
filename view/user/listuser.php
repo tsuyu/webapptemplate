@@ -1,3 +1,8 @@
+<?php
+    if($_SESSION['%^&*(^433'] != '&*((*^^^$'){
+        exit ();
+    }
+?>
 <link href="template/paging_css.css" rel="stylesheet" type="text/css" />
 <h3><img border=0 src=template/images/computer.png width=16 height=16 />&nbsp;User
          list</h3>

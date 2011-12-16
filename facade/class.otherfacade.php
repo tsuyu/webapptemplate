@@ -1,15 +1,14 @@
 <?php
-
-/**
- * example facade template
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
  * 
- * @author tsuyu
- *
+ * example facade template
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
-require_once 'abstract.facade.php';
-require_once '../../entity/class..php';
-require_once '../../api/class.otherapi.php';
+require SERVER_ROOT.'facade'.DS.'abstract.facade.php';
+require SERVER_ROOT.'api'.DS.'class.otherapi.php';
 
 class OtherFacade extends Facade {
 

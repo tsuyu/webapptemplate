@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -21,7 +20,7 @@ class Db {
         $config['dbprefix'] = $parse_ini['mysql']['dbprefix'];
         $driver = $parse_ini['dbdriver']['dbdriver'];
 
-        require_once 'class.' . $driver . '.php';
+        require_once SERVER_ROOT.'datasource'.DS.'class.' . $driver . '.php';
 
         if (!isset($obj)) {
             $obj = new $driver($config);

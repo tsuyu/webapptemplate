@@ -5,10 +5,10 @@
  * and open the template in the editor.
  * 
  * example api template
- * @author tsuyu
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
-require_once 'abstract.model.php';
+require SERVER_ROOT.'api'.DS.'abstract.model.php';
 
 class OtherApi extends Model {
 

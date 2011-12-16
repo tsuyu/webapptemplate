@@ -1,7 +1,13 @@
 <?php
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ * 
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
+ */
 
-include '../../facade/class.userfacade.php';
-include 'abstract.controller.php';
+require SERVER_ROOT.'facade'.DS.'class.userfacade.php';
+require SERVER_ROOT.'controller'.DS.'abstract.controller.php';
 
 class UserController extends Controller {
 
@@ -56,8 +62,9 @@ class UserController extends Controller {
                     $login = $user->retrieveUser($_POST['username']);
                     if (!empty($login)) {
                         if ($login['username'] == $_POST['username'] && $login['password'] == $_POST['password']) {
-                            session_start();
                             $_SESSION['user']['username'] = $login['username'];
+                            $_SESSION['user']['uid'] = $login['uid'];
+                            $_SESSION['%^&*(^433'] = '&*((*^^^$'; 
                             Util::redirect("index.php?com=otherpage");
                         } else {
                             Util::redirect("index.php?com=login");
@@ -99,7 +106,7 @@ LIST;
             case"user":
                 switch ($this->action) {
                     case "view":
-                        if ($_SESSION['user'] || $_SESSION['user'][0]->username == $_REQUEST['username']) {
+                        if ($_SESSION['user'] || $_SESSION['user']['uid'] == $_GET['id']) {
                             include '../../view/user/adduser.php';
                         }
                         break;

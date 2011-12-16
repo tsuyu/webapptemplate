@@ -1,14 +1,14 @@
 <?php
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  * 
  * example controller template
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
-include '../../facade/class.otherfacade.php';
-include 'abstract.controller.php';
+require SERVER_ROOT.'facade'.DS.'class.otherfacade.php';
+require SERVER_ROOT.'controller'.DS.'abstract.controller.php';
 
 class OtherController {
 

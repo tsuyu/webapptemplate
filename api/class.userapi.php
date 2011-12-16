@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -7,7 +6,7 @@
  * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
-require_once 'abstract.model.php';
+require SERVER_ROOT.'api'.DS.'abstract.model.php';
 
 class UserApi extends Model {
 

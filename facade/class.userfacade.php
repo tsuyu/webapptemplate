@@ -1,9 +1,15 @@
 <?php
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ * 
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
+ */
 
-require_once 'abstract.facade.php';
-require_once '../../entity/class.address.php';
-require_once '../../entity/class.user.php';
-require_once '../../api/class.userapi.php';
+require SERVER_ROOT.'facade'.DS.'abstract.facade.php';
+require SERVER_ROOT.'entity'.DS.'class.address.php';
+require SERVER_ROOT.'entity'.DS.'class.user.php';
+require SERVER_ROOT.'api'.DS.'class.userapi.php';
 
 /**
  * Enter description here ...

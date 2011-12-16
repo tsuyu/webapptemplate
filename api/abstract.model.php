@@ -1,6 +1,12 @@
 <?php
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ * 
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
+ */
 
-include '../../datasource/class.adapter.php';
+require SERVER_ROOT.'datasource'.DS.'class.adapter.php';
 
 abstract class Model {
 

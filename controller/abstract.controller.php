@@ -1,9 +1,9 @@
 <?php
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- * @author tsuyu
+ * 
+ * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
 abstract class Controller {

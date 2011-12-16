@@ -109,6 +109,20 @@ class mysqlid {
     public function fetchObject() {
         return mysqli_fetch_object($this->result);
     }
+    
+    /**
+     * Fetch a result row as an associative array.
+     * @return array
+     */
+    public function fetchAll() {
+        $rows = array();
+
+        while ($row = $this->fetchAssoc()) {
+            $rows[] = $row;
+        }
+
+        return $rows;
+    }
 
     /**
      * Returns the number of rows from the executed query.

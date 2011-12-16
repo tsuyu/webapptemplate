@@ -26,13 +26,13 @@ class pdod {
      * 	@var string
      */
     private $connection;
-    
+
     /**
      * 	Total query
      * 	@var string
      */
     private $queries_count;
-    
+
     /**
      * 	Result of query
      * 	@var string
@@ -115,6 +115,20 @@ class pdod {
     }
 
     /**
+     * Fetch a result row as an associative array.
+     * @return array
+     */
+    public function fetchAll() {
+        $rows = array();
+
+        while ($row = $this->fetchAssoc()) {
+            $rows[] = $row;
+        }
+
+        return $rows;
+    }
+
+    /**
      * Returns the number of rows from the executed query.
      * @return integer
      */
@@ -177,7 +191,7 @@ class pdod {
 
         if ($full_escape) {
             $string = str_replace(array('%', '_'), array('\%', '\_'), $string);
-        }elseif (get_magic_quotes_gpc()) {
+        } elseif (get_magic_quotes_gpc()) {
             $string = stripslashes($string);
         }
 

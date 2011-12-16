@@ -19,19 +19,11 @@
  *      index.php
  *      @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
-define('SERVER_ROOT' , 'D:/xampp/htdocs/webapptemplate');
-define('IS_ENV_PRODUCTION', true);
+include '../shared.php';
 
-include SERVER_ROOT.'/util/class.util.php';
-
-Util::common();
-Util::setReporting();
-Util::removeMagicQuotes();
-Util::unregisterGlobals();
-
-include SERVER_ROOT.'/controller/class.usercontroller.php';
+include SERVER_ROOT.'controller'.DS.'class.usercontroller.php';
 
 $request = new UserController();
 
-include SERVER_ROOT.'/template/template.php';
+include SERVER_ROOT.'template'.DS.'template.php';
 ?>
