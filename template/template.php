@@ -15,6 +15,7 @@
 
                         <?php
                         echo "<div style=\"margin-bottom:5; margin-left:1; color:black; font-size:1em; font-weight:bold\"  align='right'>";
+
                         if ($_SESSION['user']) {
                             echo 'User in Session: ';
                             echo '<a href="index.php?com=user&action=view&username=' . $_SESSION['user']['username'] . '">' . $_SESSION['user']['username'] . '</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';

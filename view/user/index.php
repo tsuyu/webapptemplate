@@ -20,6 +20,7 @@
  *      @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 define('SERVER_ROOT' , 'D:/xampp/htdocs/webapptemplate');
+define('IS_ENV_PRODUCTION', true);
 
 include SERVER_ROOT.'/util/class.util.php';
 

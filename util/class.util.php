@@ -112,8 +112,10 @@ class Util {
 
     public static function setReporting() {
         if (IS_ENV_PRODUCTION == TRUE) {
+            error_reporting(E_ALL ^ E_NOTICE);
             ini_set('display_errors', 'On');
         } else {
+            error_reporting(E_ALL ^ E_NOTICE);
             ini_set('display_errors', 'Off');
             ini_set('log_errors', 'On');
             ini_set('error_log', SERVER_ROOT.'/tmp/logs/error.log');
