@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <link rel="shortcut icon" href="template/images/mobile.png"></link>
-        <link href="template/css/template_css.css" rel="stylesheet" type="text/css" ></link>
+        <link rel="shortcut icon" href="../../template/images/mobile.png"></link>
+        <link href="../../template/css/template_css.css" rel="stylesheet" type="text/css" ></link>
         <title>tsuyu.org</title>
     </head>
     <body>
@@ -11,7 +11,7 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td colspan="2">
-                        <div class="header"><img src="template/images/banner.jpg" /></div>
+                        <div class="header"><img src="../../template/images/banner.jpg" /></div>
 
                         <?php
                         echo "<div style=\"margin-bottom:5; margin-left:1; color:black; font-size:1em; font-weight:bold\"  align='right'>";

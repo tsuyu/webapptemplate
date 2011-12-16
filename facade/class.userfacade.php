@@ -1,9 +1,9 @@
 <?php
 
 require_once 'abstract.facade.php';
-require_once 'entity/class.address.php';
-require_once 'entity/class.user.php';
-require_once 'api/class.userapi.php';
+require_once '../../entity/class.address.php';
+require_once '../../entity/class.user.php';
+require_once '../../api/class.userapi.php';
 
 /**
  * Enter description here ...

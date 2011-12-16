@@ -1,6 +1,6 @@
 <?php
 
-include './facade/class.userfacade.php';
+include '../../facade/class.userfacade.php';
 include 'abstract.controller.php';
 
 class UserController extends Controller {
@@ -94,22 +94,22 @@ LIST;
     public function loadForm() {
         switch ($this->com) {
             case "login":
-                include 'view/user/loginform.php';
+                include '../../view/user/loginform.php';
                 break;
             case"user":
                 switch ($this->action) {
                     case "view":
                         if ($_SESSION['user'] || $_SESSION['user'][0]->username == $_REQUEST['username']) {
-                            include 'view/user/adduser.php';
+                            include '../../view/user/adduser.php';
                         }
                         break;
                 }
                 break;
             case "otherpage":
-                include 'view/user/otherpage.php';
+                include '../../view/user/otherpage.php';
                 break;
             default:
-                include 'view/user/main.php';
+                include '../../view/user/main.php';
                 break;
         }
     }

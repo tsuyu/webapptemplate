@@ -77,7 +77,7 @@ class pdod {
                 echo $query;
             }
 
-            $this->result = $this->connection->query($this->injection($query));
+            $this->result = $this->connection->query(Util::injection($query));
 
             if ($this->result) {
                 $this->queries_count++;
@@ -164,7 +164,7 @@ class pdod {
      * @return integer
      */
     public function rowsAffected() {
-        return;
+        return $this->connection->query("SELECT FOUND_ROWS()")->fetchColumn();
     }
 
     /**

@@ -20,5 +20,18 @@
  *      @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
-header("location:./view/user/index.php")
+
+include '../../util/class.util.php';
+include '../../datasource/class.adapter.php';
+
+Util::common();
+Util::setReporting();
+Util::removeMagicQuotes();
+Util::unregisterGlobals();
+
+include '../../controller/class.usercontroller.php';
+
+$request = new UserController();
+
+include '../../template/template.php';
 ?>

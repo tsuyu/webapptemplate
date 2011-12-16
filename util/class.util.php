@@ -124,6 +124,13 @@ class Util {
         return trim(str_replace(array("#", "--", "\\", "//", ";", "/*", "*/", "drop", "truncate"), "", strtolower($query)));
     }
 
+    public static function common() {
+        date_default_timezone_set("Asia/Kuala_Lumpur");
+        define('ROOT', dirname(dirname(__FILE__)));
+        define('DS', DIRECTORY_SEPARATOR);
+        define('IS_ENV_PRODUCTION', TRUE);
+    }
+
 }
 
 ?>
