@@ -107,16 +107,16 @@ LIST;
                 switch ($this->action) {
                     case "view":
                         if ($_SESSION['user'] || $_SESSION['user']['uid'] == $_GET['id']) {
-                            include '../../view/user/adduser.php';
+                            require SERVER_ROOT.'view'.DS.'user'.DS.'adduser.php';
                         }
                         break;
                 }
                 break;
             case "otherpage":
-                include '../../view/user/otherpage.php';
+                require SERVER_ROOT.'view'.DS.'user'.DS.'otherpage.php';
                 break;
             default:
-                include '../../view/user/main.php';
+                require SERVER_ROOT.'view'.DS.'user'.DS.'main.php';
                 break;
         }
     }
