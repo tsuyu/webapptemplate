@@ -19,19 +19,18 @@
  *      index.php
  *      @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
+define('SERVER_ROOT' , 'D:/xampp/htdocs/webapptemplate');
 
-
-include '../../util/class.util.php';
-include '../../datasource/class.adapter.php';
+include SERVER_ROOT.'/util/class.util.php';
 
 Util::common();
 Util::setReporting();
 Util::removeMagicQuotes();
 Util::unregisterGlobals();
 
-include '../../controller/class.usercontroller.php';
+include SERVER_ROOT.'/controller/class.usercontroller.php';
 
 $request = new UserController();
 
-include '../../template/template.php';
+include SERVER_ROOT.'/template/template.php';
 ?>

@@ -116,7 +116,7 @@ class Util {
         } else {
             ini_set('display_errors', 'Off');
             ini_set('log_errors', 'On');
-            ini_set('error_log', ROOT . DS . 'tmp' . DS . 'logs' . DS . 'error.log');
+            ini_set('error_log', SERVER_ROOT.'/tmp/logs/error.log');
         }
     }
 
@@ -126,9 +126,6 @@ class Util {
 
     public static function common() {
         date_default_timezone_set("Asia/Kuala_Lumpur");
-        define('ROOT', dirname(dirname(__FILE__)));
-        define('DS', DIRECTORY_SEPARATOR);
-        define('IS_ENV_PRODUCTION', TRUE);
     }
 
 }

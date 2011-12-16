@@ -1,5 +1,7 @@
 <?php
 
+include '../../datasource/class.adapter.php';
+
 abstract class Model {
 
     protected $db;

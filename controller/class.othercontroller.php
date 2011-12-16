@@ -6,6 +6,7 @@
  * 
  * example controller template
  */
+
 include '../../facade/class.otherfacade.php';
 include 'abstract.controller.php';
 
