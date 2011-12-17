@@ -1,8 +1,9 @@
 <?php
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- * 
+ *
  * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
@@ -11,7 +12,7 @@ class Util {
     /**
      * RFC(2)822 Email Parser
      *
-     * By Cal Henderson <cal@iamcal.com> 
+     * By Cal Henderson <cal@iamcal.com>
      * This code is licensed under a Creative Commons
      * Attribution-ShareAlike 2.5 License
      * http://creativecommons.org/licenses/by-sa/2.5/
@@ -117,7 +118,7 @@ class Util {
             error_reporting(E_ALL ^ E_NOTICE);
             ini_set('display_errors', 'Off');
             ini_set('log_errors', 'On');
-            ini_set('error_log', SERVER_ROOT.'tmp/logs/error.log');
+            ini_set('error_log', SERVER_ROOT . 'tmp' . DS . 'logs' . DS . 'error.log');
         }
     }
 

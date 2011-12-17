@@ -20,7 +20,7 @@ abstract class Facade {
                 }
             }
         } else {
-            $classes = explode(",", $mode);
+            $classes = explode(":", $mode);
             foreach ($classes as $class) {
                 $invoke = strtolower($class);
                 if (!isset($this->instance[$invoke]) && empty($this->instance[$invoke])) {

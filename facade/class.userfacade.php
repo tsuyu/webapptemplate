@@ -1,4 +1,5 @@
 <?php
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -6,10 +7,10 @@
  * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
-require SERVER_ROOT.'facade'.DS.'abstract.facade.php';
-require SERVER_ROOT.'entity'.DS.'class.address.php';
-require SERVER_ROOT.'entity'.DS.'class.user.php';
-require SERVER_ROOT.'api'.DS.'class.userapi.php';
+require SERVER_ROOT . 'facade' . DS . 'abstract.facade.php';
+require SERVER_ROOT . 'entity' . DS . 'class.address.php';
+require SERVER_ROOT . 'entity' . DS . 'class.user.php';
+require SERVER_ROOT . 'api' . DS . 'class.userapi.php';
 
 /**
  * Enter description here ...
@@ -18,10 +19,10 @@ require SERVER_ROOT.'api'.DS.'class.userapi.php';
  */
 class UserFacade extends Facade {
 
-    public function __construct($mode) {
+    public function __construct($mode=NULL) {
         $this->instance = array();
         //default class
-        $this->classes = array("User", "Address", "UserApi");
+        $this->classes = array("User", "Address", "UserApi", "SecureSession");
         $this->init($mode);
     }
 
@@ -31,6 +32,10 @@ class UserFacade extends Facade {
 
     public function addressInstance() {
         return $this->instance['address'];
+    }
+
+    public function sessionInstance() {
+        return $this->instance['securesession'];
     }
 
     public function createUser($user) {
