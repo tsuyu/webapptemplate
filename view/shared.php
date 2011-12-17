@@ -6,8 +6,10 @@
  * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
-define('SERVER_ROOT' , 'D:/xampp/htdocs/webapptemplate/');
+define('ROOT' , $_SERVER['DOCUMENT_ROOT']);
+define('FOLDER', 'webapptemplate');
 define('DS', DIRECTORY_SEPARATOR);
+define('SERVER_ROOT',ROOT.DS.FOLDER.DS );
 define('IS_ENV_PRODUCTION', true);
 
 include SERVER_ROOT.'util'.DS.'class.util.php';
