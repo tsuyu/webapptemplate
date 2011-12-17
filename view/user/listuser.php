@@ -1,7 +1,14 @@
 <?php
-    if($_SESSION['%^&*(^433'] != '&*((*^^^$'){
-        exit ();
+$session = new SecureSession;
+
+if (isset($_SESSION['logged_in'])) {
+    if ($session->AnalyseFingerPrint($Analysis) === true) {
+        
+    } else {
+        $session->Destroy();
+        Util::redirect("index.php?com=login");
     }
+}
 ?>
 <link href="template/paging_css.css" rel="stylesheet" type="text/css" />
 <h3><img border=0 src=template/images/computer.png width=16 height=16 />&nbsp;User
@@ -20,8 +27,8 @@
            width="100%">
 
         <tr>
-<?php
-?>
+            <?php
+            ?>
             <th>&nbsp</th>
             <?php ?>
 
@@ -31,14 +38,14 @@
             <th>Phone Number</th>
 
         </tr>
-<?php ?>
+        <?php ?>
         <tr>
 
-<?php
-?>
+            <?php
+            ?>
             <td><input type="checkbox" name="selected[]"
                        value="<?php echo $value->username; ?>" /></td>
-        <?php ?>
+                <?php ?>
 
 
             <td><?php echo $value->username; ?></td>
@@ -51,10 +58,10 @@
             <td><a href="mailto:<?php echo $value->email; ?>"><img border=0
                                                                    src=template/images/mail_write.png width=16 height=16 /></a></td>
         </tr>
-<?php ?>
+        <?php ?>
     </table>
 
-<?php ?> <input type="hidden" name="com" value="user" /> <input
+    <?php ?> <input type="hidden" name="com" value="user" /> <input
         type="hidden" name="action" value="delete" /> <input type="submit"
         name="deleteUser" value="Delete User" onClick="return deleteUser();" />
 </form>

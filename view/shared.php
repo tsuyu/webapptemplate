@@ -5,6 +5,7 @@
  * 
  * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
+date_default_timezone_set("Asia/Kuala_Lumpur");
 
 define('ROOT' , $_SERVER['DOCUMENT_ROOT']);
 define('FOLDER', 'webapptemplate');
@@ -13,9 +14,10 @@ define('SERVER_ROOT',ROOT.DS.FOLDER.DS );
 define('IS_ENV_PRODUCTION', true);
 
 include SERVER_ROOT.'util'.DS.'class.util.php';
+include SERVER_ROOT.'libs'.DS.'class.session.php';
 
-Util::common();
 Util::setReporting();
 Util::removeMagicQuotes();
 Util::unregisterGlobals();
+
 ?>

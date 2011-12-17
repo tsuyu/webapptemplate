@@ -1,4 +1,5 @@
 <?php
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -6,8 +7,8 @@
  * @author tsuyu / mohamad dot yusuf at hotmail dot com
  */
 
-require SERVER_ROOT.'facade'.DS.'class.userfacade.php';
-require SERVER_ROOT.'controller'.DS.'abstract.controller.php';
+require SERVER_ROOT . 'facade' . DS . 'class.userfacade.php';
+require SERVER_ROOT . 'controller' . DS . 'abstract.controller.php';
 
 class UserController extends Controller {
 
@@ -62,9 +63,11 @@ class UserController extends Controller {
                     $login = $user->retrieveUser($_POST['username']);
                     if (!empty($login)) {
                         if ($login['username'] == $_POST['username'] && $login['password'] == $_POST['password']) {
+                            $session = new SecureSession;
+                            $session->SetFingerPrint();
+                            $_SESSION['logged_in'] = true;
                             $_SESSION['user']['username'] = $login['username'];
                             $_SESSION['user']['uid'] = $login['uid'];
-                            $_SESSION['%^&*(^433'] = '&*((*^^^$'; 
                             Util::redirect("index.php?com=otherpage");
                         } else {
                             Util::redirect("index.php?com=login");
@@ -107,16 +110,16 @@ LIST;
                 switch ($this->action) {
                     case "view":
                         if ($_SESSION['user'] || $_SESSION['user']['uid'] == $_GET['id']) {
-                            require SERVER_ROOT.'view'.DS.'user'.DS.'adduser.php';
+                            require SERVER_ROOT . 'view' . DS . 'user' . DS . 'adduser.php';
                         }
                         break;
                 }
                 break;
             case "otherpage":
-                require SERVER_ROOT.'view'.DS.'user'.DS.'otherpage.php';
+                require SERVER_ROOT . 'view' . DS . 'user' . DS . 'otherpage.php';
                 break;
             default:
-                require SERVER_ROOT.'view'.DS.'user'.DS.'main.php';
+                require SERVER_ROOT . 'view' . DS . 'user' . DS . 'main.php';
                 break;
         }
     }
